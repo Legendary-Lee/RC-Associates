@@ -1,0 +1,15 @@
+{
+  "name": "@rc-associates/bid-connector",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Ingests solicitations from BidNet Direct and the Euna (Bonfire) supplier portal, normalizes submission deadlines, and pushes deadline events into a custom CRM.",
+  "bin": { "bid-connector": "./bin/connector.js" },
+  "scripts": {
+    "start": "node bin/connector.js run",
+    "preview": "node bin/connector.js run --dry-run",
+    "doctor": "node bin/connector.js doctor",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": { "node": ">=20" }
+}

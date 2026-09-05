@@ -1,0 +1,79 @@
+{
+  "timezone": "America/New_York",
+  "statePath": "./.state/solicitations.json",
+  "alertLeadDays": [21, 14, 7, 3, 1],
+  "retentionDays": 120,
+
+  "sources": [
+    {
+      "id": "bidnet-email",
+      "type": "bidnet",
+      "mode": "email",
+      "inbox": "./inbox/bidnet",
+      "archive": "./inbox/_processed"
+    },
+    {
+      "id": "bidnet-export",
+      "type": "bidnet",
+      "mode": "csv",
+      "enabled": false,
+      "path": "./inbox/bidnet-export.csv"
+    },
+    {
+      "id": "euna-email",
+      "type": "euna",
+      "mode": "email",
+      "inbox": "./inbox/euna",
+      "archive": "./inbox/_processed"
+    },
+    {
+      "id": "euna-portals",
+      "type": "euna",
+      "mode": "http",
+      "enabled": false,
+      "portals": ["cityofexample.bonfirehub.com"],
+      "cookieEnv": "EUNA_SESSION_COOKIE",
+      "rateLimitMs": 5000
+    }
+  ],
+
+  "sinks": [
+    {
+      "id": "crm",
+      "type": "crm-http",
+      "url": "https://crm.example.com/api/v1/bid-events",
+      "method": "POST",
+      "authEnv": "CRM_API_TOKEN",
+      "authHeader": "Authorization",
+      "authScheme": "Bearer",
+      "batch": true,
+      "batchKey": "records",
+      "constants": {
+        "pipeline": "Public Bids",
+        "owner": "estimating@rcabuildingconstruction.com"
+      },
+      "map": {
+        "external_id": "solicitation.id",
+        "event_type": "type",
+        "name": "solicitation.title",
+        "account": "solicitation.agency",
+        "due_date": "solicitation.closesAt",
+        "due_date_display": "{solicitation.closesAtLocal} {solicitation.timeZone}",
+        "questions_due": "solicitation.questionsDueAt",
+        "pre_bid_at": "solicitation.preBidAt",
+        "status": "solicitation.status",
+        "url": "solicitation.url",
+        "source_system": "solicitation.source",
+        "solicitation_number": "solicitation.solicitationNumber",
+        "days_until_close": "solicitation.daysUntilClose",
+        "note": "reason",
+        "occurred_at": "occurredAt"
+      }
+    },
+    {
+      "id": "audit",
+      "type": "jsonl",
+      "path": "./.state/events.jsonl"
+    }
+  ]
+}
