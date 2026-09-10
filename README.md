@@ -14,3 +14,15 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Bid connector
+
+`connector/` holds a standalone Node service that syncs submission deadlines from
+the RC Associates BidNet Direct and Euna (Bonfire) supplier accounts into a
+custom CRM. It is independent of this site — nothing in `src/` imports it.
+
+```bash
+cd connector && npm test && node bin/connector.js doctor
+```
+
+See [`connector/README.md`](connector/README.md) for setup.

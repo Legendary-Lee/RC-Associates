@@ -1,0 +1,6 @@
+.state/
+inbox/**/*.eml
+inbox/**/*.csv
+connector.config.json
+.env
+events.jsonl
